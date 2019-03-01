@@ -1,8 +1,89 @@
 # Sum All After Benchmarks
 
+Went a little over board testing and comparing lists, Numpy arrays and generators following a question on StackOverflow.
+
+[Sum over everything after each element in an array](https://stackoverflow.com/questions/54836220/sum-over-everything-after-each-element-in-an-array/54836410#54836410)
+
+## The Scripts
+
+```python
+def reversed_loop(arr):
+    r = []
+    last = 0
+    a = arr[::-1]
+    for x in a:
+        r.append(x + last)
+        last += x
+    return r[::-1]
+
+
+def sum_first(arr):
+    t = sum(arr)
+    r = []
+    for a in arr:
+        r.append(t)
+        t -= a
+    return r
+
+
+def generator(arr):
+    def gen(a):
+        r = 0
+        for x in a:
+            r += x
+            yield r
+
+    return [*gen(arr[::-1])][::-1]
+
+
+def reverse_sum(arr):
+    if not isinstance(arr, list):
+        return False
+    last = 0
+    r = []
+    for i in reversed(range(0, len(arr))):
+        last = arr[i] + last
+        r.append(last)
+    return r[::-1]
+
+
+def josep_joestar(arr):
+    if not isinstance(arr, list):
+        return False
+    for i in range(len(arr) - 2, -1, -1):
+        arr[i] += arr[i + 1]
+    return arr
+
+# Not tested too slow to pass through benchmarks
+def alain_t(arr):
+    return np.sum(np.triu(arr), 1)
+
+
+def user2699(arr):
+    return np.add.accumulate(arr[::-1])[::-1]
+
+
+def stuart(arr):
+    return np.flip(np.cumsum(np.flip(arr)))
+
+
+def stuart_two(arr):
+    return np.cumsum(arr[::-1])[::-1]
+
+# Not tested too slow to pass through benchmarks
+def student(arr):
+    return [sum(arr[i:]) for i in range(len(arr))]
+```
+
 ## With Lists, Arrays and Generators
 
-### generator, N = 4
+These benchmarks compare different methods of creating and providing the data needed to run the scripts.
+
+---
+
+### N = 4
+
+#### generator, 
 
 | time | function |
 | --- | --- |
@@ -14,7 +95,7 @@
 |0.0000157 | user2699
 
 
-### generator to List, N = 4
+#### generator to List, N = 4
 | time | function |
 | --- | --- |
 |0.0000012 | sum_first |
@@ -28,7 +109,7 @@
 |0.0000066 | stuart_two
 
 
-### generator to np.array, N = 4
+#### generator to np.array, N = 4
 
 | time | function |
 | --- | --- |
@@ -40,7 +121,7 @@
 |0.0000189 | reversed_loop
 
 
-### np.arange, N = 4
+#### np.arange, N = 4
 
 | time | function |
 | --- | --- |
@@ -52,7 +133,7 @@
 |0.0000072 | reversed_loop
 
 
-### list, N = 4
+#### list, N = 4
 
 | time | function |
 | --- | --- |
@@ -67,7 +148,7 @@
 |0.0016560 | reversed_loop
 
 
-### np.array, N = 4
+#### np.array, N = 4
 
 | time | function |
 | --- | --- |
@@ -78,8 +159,11 @@
 |0.0022938 | generator |
 |0.0030003 | reversed_loop
 
+---
 
-### generator, N = 500
+### N = 500
+
+#### generator, N = 500
 
 | time | function |
 | --- | --- |
@@ -90,8 +174,7 @@
 |0.0001628 | stuart_two |
 |0.0001677 | sum_first
 
-
-### generator to List, N = 500
+#### generator to List, N = 500
 
 | time | function |
 | --- | --- |
@@ -105,8 +188,7 @@
 |0.0001498 | sum_first |
 |0.0001812 | reverse_sum
 
-
-### generator to np.array, N = 500
+#### generator to np.array, N = 500
 
 | time | function |
 | --- | --- |
@@ -117,8 +199,7 @@
 |0.0003199 | generator |
 |0.0004460 | sum_first
 
-
-### np.arange, N = 500
+#### np.arange, N = 500
 
 | time | function |
 | --- | --- |
@@ -129,8 +210,7 @@
 |0.0001803 | generator |
 |0.0003067 | sum_first
 
-
-### list, N = 500
+#### list, N = 500
 
 | time | function |
 | --- | --- |
@@ -144,8 +224,7 @@
 |0.0012499 | sum_first |
 |0.0019545 | reverse_sum
 
-
-### np.array, N = 500
+#### np.array, N = 500
 
 | time | function |
 | --- | --- |
@@ -156,8 +235,11 @@
 |0.0041857 | sum_first |
 |0.0043007 | reversed_loop
 
+---
 
-### generator, N = 2500
+### N = 2500
+
+#### generator, N = 2500
 
 | time | function |
 | --- | --- |
@@ -169,7 +251,7 @@
 |0.0008592 | reversed_loop
 
 
-### generator to List, N = 2500
+#### generator to List, N = 2500
 
 | time | function |
 | --- | --- |
@@ -184,7 +266,7 @@
 |0.0009189 | reverse_sum
 
 
-### generator to np.array, N = 2500
+#### generator to np.array, N = 2500
 
 | time | function |
 | --- | --- |
@@ -196,7 +278,7 @@
 |0.0021942 | sum_first
 
 
-### np.arange, N = 2500
+#### np.arange, N = 2500
 
 | time | function |
 | --- | --- |
@@ -208,7 +290,7 @@
 |0.0014530 | sum_first
 
 
-### list, N = 2500
+#### list, N = 2500
 
 | time | function |
 | --- | --- |
@@ -223,7 +305,7 @@
 |0.0016331 | reverse_sum
 
 
-### np.array, N = 2500
+#### np.array, N = 2500
 
 | time | function |
 | --- | --- |
@@ -235,6 +317,8 @@
 |0.0029954 | reversed_loop
 
 ## With N 
+
+If all the numbers are sequential then we can use `∑1..n = n(n+1)/2` to sum and subtract. These functions need only be passed an integer `n`.
 
 ### N = 4
 
