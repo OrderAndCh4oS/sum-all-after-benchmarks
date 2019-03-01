@@ -83,7 +83,7 @@ These benchmarks compare different methods of creating and providing the data ne
 
 ### N = 4
 
-#### generator, 
+#### generator, N = 4
 
 | time | function |
 | --- | --- |
